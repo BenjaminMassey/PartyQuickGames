@@ -284,6 +284,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8785637123221664227, guid: 94176448692244e45980f1a8f7bfe813, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8785637123221664228, guid: 94176448692244e45980f1a8f7bfe813, type: 3}
       propertyPath: m_Color.g
       value: 0
@@ -707,6 +711,10 @@ PrefabInstance:
     - target: {fileID: 8785637123221664227, guid: 94176448692244e45980f1a8f7bfe813, type: 3}
       propertyPath: m_Name
       value: Yellow Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8785637123221664227, guid: 94176448692244e45980f1a8f7bfe813, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8785637123221664228, guid: 94176448692244e45980f1a8f7bfe813, type: 3}
       propertyPath: m_Color.b
