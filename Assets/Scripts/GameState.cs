@@ -21,6 +21,18 @@ public class GameState : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine("Begin");
+    }
+
+    IEnumerator Begin() {
+        float prevTimeScale = Time.timeScale;
+        Time.timeScale = 0.0f;
+        mText.SetActive(true);
+        mText.GetComponent<Text>().text = "Ready...";
+        yield return new WaitForSecondsRealtime(1.85f);
+        mText.GetComponent<Text>().text = "GO!";
+        yield return new WaitForSecondsRealtime(0.15f);
+        Time.timeScale = prevTimeScale;
         mText.SetActive(false);
         mAlive = mPlayers.Count;
         mDied = new List<GameObject>();
@@ -54,6 +66,8 @@ public class GameState : MonoBehaviour
         Time.timeScale = 0.0f;
         yield return new WaitForSecondsRealtime(3.0f);
         Time.timeScale = prevTimeScale;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        int sceneCount = SceneManager.sceneCountInBuildSettings;
+        int rng = UnityEngine.Random.Range(0, sceneCount);
+        SceneManager.LoadScene(rng);
     }
 }

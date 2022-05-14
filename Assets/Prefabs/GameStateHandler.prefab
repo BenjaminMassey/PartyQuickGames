@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7440897994439284846}
   - component: {fileID: 7440897994439284847}
   m_Layer: 0
-  m_Name: GameEnder
+  m_Name: GameStateHandler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
