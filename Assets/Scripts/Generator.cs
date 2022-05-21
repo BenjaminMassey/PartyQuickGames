@@ -5,6 +5,8 @@ using UnityEngine;
 public class Generator : MonoBehaviour
 {
     [SerializeField]
+    private bool mRampUp = true;
+    [SerializeField]
     private GameObject mBaseGO;
     [SerializeField]
     private float mFrequency;
@@ -15,12 +17,14 @@ public class Generator : MonoBehaviour
     [SerializeField]
     private Vector3 mVariance;
 
+    private float mRampVal;
     private float mRNG;
 
     // Start is called before the first frame update
     void Start()
     {
-        mRNG = 0.0f;
+        mRampVal = 0f;
+        mRNG = 0f;
         StartCoroutine("Main");
     }
 
@@ -32,10 +36,13 @@ public class Generator : MonoBehaviour
 
     IEnumerator Main() {
         while (true) {
-            for (int _ = 0; _ < mAmount; _++)
+            mRampVal = (mRampUp ? 1f : 0f) * (Time.timeSinceLevelLoad * 0.01f);
+            mAmount += mRampVal;
+            for (int _ = 0; _ < mAmount; _++) {
                 Instantiate(mBaseGO);
-            mRNG = Random.Range(-50.0f, 50.0f) / 100.0f;
-            mBaseGO.transform.position = mStart + (mVariance * mRNG);
+                mRNG = Random.Range(-50.0f, 50.0f) / 100.0f;
+                mBaseGO.transform.position = mStart + (mVariance * mRNG);
+            }
             yield return new WaitForSeconds(mFrequency);
         }
     }

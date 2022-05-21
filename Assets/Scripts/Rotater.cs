@@ -12,11 +12,8 @@ public class Rotater : MonoBehaviour
     private float mSwapFrequency = 10f;
 
     private float mStartTime;
-
     private float mRampVal;
-
     private float mDirection;
-
     private int mSwapCount;
 
     // Start is called before the first frame update
