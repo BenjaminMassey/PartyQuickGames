@@ -405,6 +405,10 @@ PrefabInstance:
       propertyPath: mRightKey
       value: 275
       objectReference: {fileID: 0}
+    - target: {fileID: 8785637123221664233, guid: 94176448692244e45980f1a8f7bfe813, type: 3}
+      propertyPath: mJoyStickNum
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94176448692244e45980f1a8f7bfe813, type: 3}
 --- !u!1 &1018522538 stripped
@@ -868,6 +872,10 @@ PrefabInstance:
     - target: {fileID: 8785637123221664233, guid: 94176448692244e45980f1a8f7bfe813, type: 3}
       propertyPath: mRightKey
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8785637123221664233, guid: 94176448692244e45980f1a8f7bfe813, type: 3}
+      propertyPath: mJoyStickNum
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94176448692244e45980f1a8f7bfe813, type: 3}
