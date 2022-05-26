@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NotDisposal.unity
     guid: 0ca7e6ebd15ec05469038503a2b36e81
+  - enabled: 1
+    path: Assets/Scenes/NotNiceMeat.unity
+    guid: 8b21e8a06270bff409fbbc443e836107
   m_configObjects: {}

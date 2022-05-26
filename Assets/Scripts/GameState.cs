@@ -36,7 +36,7 @@ public class GameState : MonoBehaviour
                 Debug.Log(player.name + ": " + GlobalState.scores[player.name]);
         }
         if (over)
-            Finale();
+            StartCoroutine("Finale");
         else
         {
             mGlobalStateSnapshot = GlobalState.scores.ToDictionary(entry => entry.Key,
@@ -86,26 +86,30 @@ public class GameState : MonoBehaviour
 
     void End(string winner)
     {
-        mText.GetComponent<Text>().text = winner == string.Empty ? "TIE!" : winner + " won the game!";
-        mText.SetActive(true);
         if (GlobalState.scores.ContainsKey(winner)) GlobalState.scores[winner]++;
+        string msg = "";
+        msg += winner == string.Empty ? "TIE!\n\n" : winner + " won the game!\n\n";
+        foreach (KeyValuePair<string, int> score in GlobalState.scores)
+            msg += score.Key + ": " + score.Value.ToString() + "\n";
+        mText.GetComponent<Text>().text = msg;
+        mText.SetActive(true);
         StartCoroutine("NextRound");
     }
 
     IEnumerator NextRound()
     {
         float prevTimeScale = Time.timeScale;
-        Time.timeScale = 0.0f;
-        yield return new WaitForSecondsRealtime(3.0f);
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(3f);
         Time.timeScale = prevTimeScale;
         int sceneCount = SceneManager.sceneCountInBuildSettings;
         int rng = UnityEngine.Random.Range(0, sceneCount);
         SceneManager.LoadScene(rng);
     }
 
-    void Finale() 
+    IEnumerator Finale() 
     {
-        string end = "";
+        string end = "Rounds are over...\n\n";
         string winner = "";
         int high_score = -1;
         foreach (KeyValuePair<string, int> score in GlobalState.scores)
@@ -113,10 +117,13 @@ public class GameState : MonoBehaviour
             end += score.Key + ": " + score.Value.ToString() + "\n";
             if (score.Value > high_score) winner = score.Key;
         }
-        end += "Congrats to " + winner + "!";
+        end += "\nCongrats to " + winner + "!";
         mText.SetActive(true);
         mText.GetComponent<Text>().text = end;
-
+        float prevTimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(5f);
+        Time.timeScale = prevTimeScale;
         GlobalState.scores.Clear();
         StartCoroutine("NextRound");
     }
