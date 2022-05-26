@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/SelectionMenu.unity
+    guid: 1b49c4233798a244e9a15a1f261fbc70
+  - enabled: 1
     path: Assets/Scenes/NotKetchupSpin.unity
     guid: 3646ab2514c22744db04129bfdd46178
   - enabled: 1

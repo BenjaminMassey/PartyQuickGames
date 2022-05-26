@@ -20,9 +20,12 @@ public static class JoyCon
 
     public static KeyCode Plus() { return KeyCode.JoystickButton9; }
     public static KeyCode Plus(int joystick_num) { return Str2Key("Joystick" + joystick_num.ToString() + "Button9"); }
+    
+    public static KeyCode Minus() { return KeyCode.JoystickButton8; }
+    public static KeyCode Minus(int joystick_num) { return Str2Key("Joystick" + joystick_num.ToString() + "Button9"); }
 
-    public static KeyCode Minus() { return KeyCode.JoystickButton12; }
-    public static KeyCode Minus(int joystick_num) { return Str2Key("Joystick" + joystick_num.ToString() + "Button12"); }
+    public static KeyCode Home() { return KeyCode.JoystickButton12; }
+    public static KeyCode Home(int joystick_num) { return Str2Key("Joystick" + joystick_num.ToString() + "Button12"); }
 
 
     public static KeyCode R() { return KeyCode.JoystickButton14; }
@@ -38,7 +41,7 @@ public static class JoyCon
     public static KeyCode SL() { return KeyCode.JoystickButton4; }
     public static KeyCode SL(int joystick_num) { return Str2Key("Joystick" + joystick_num.ToString() + "Button4"); }
 
-    public static string StickX() { return "JoyCon Horizontal"; } // Joystick Vertical = Joystick Axis 9.
+    public static string StickX() { return "JoyCon Horizontal"; } // Joystick Horizontal = Joystick Axis 10.
     public static string StickX(int joystick_num) { return "JoyCon " + joystick_num.ToString() + " Horizontal"; }
 
     public static string StickY() { return "JoyCon Vertical"; } // Joystick Vertical = Joystick Axis 9.
