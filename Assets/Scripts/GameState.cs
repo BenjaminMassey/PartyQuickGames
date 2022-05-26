@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,13 +19,34 @@ public class GameState : MonoBehaviour
 
     private List<GameObject> mDied;
 
+    private Dictionary<string, int> mGlobalStateSnapshot;
+
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine("Begin");
+        Time.timeScale = 1f;
+        bool over = false;
+        foreach (GameObject player in mPlayers)
+        {
+            if (!GlobalState.scores.ContainsKey(player.name))
+                GlobalState.scores.Add(player.name, 0);
+            else if (GlobalState.scores[player.name] >= GlobalState.end)
+                over = true; // Could break, but wanna add any new players for end screen
+            else
+                Debug.Log(player.name + ": " + GlobalState.scores[player.name]);
+        }
+        if (over)
+            Finale();
+        else
+        {
+            mGlobalStateSnapshot = GlobalState.scores.ToDictionary(entry => entry.Key,
+                                                                   entry => entry.Value);
+            StartCoroutine("Begin");
+        }
     }
 
-    IEnumerator Begin() {
+    IEnumerator Begin()
+    {
         float prevTimeScale = Time.timeScale;
         Time.timeScale = 0.0f;
         mText.SetActive(true);
@@ -45,23 +67,33 @@ public class GameState : MonoBehaviour
         if (mAlive == 1)
         {
             string winner = "";
-            foreach (GameObject player in mPlayers) {
+            foreach (GameObject player in mPlayers)
+            {
                 if (!mDied.Contains(player))
                     winner = player.name;
             }
-            End(winner + " won the game!");
+            End(winner);
         }
         else if (mAlive <= 0)
-            End("Tie!");
+        {
+            StopAllCoroutines();
+            foreach (KeyValuePair<string, int> score in mGlobalStateSnapshot)
+                GlobalState.scores[score.Key] = score.Value;
+            End(string.Empty);
+        }
+            
     }
 
-    void End(string message) {
-        mText.GetComponent<Text>().text = message;
+    void End(string winner)
+    {
+        mText.GetComponent<Text>().text = winner == string.Empty ? "TIE!" : winner + " won the game!";
         mText.SetActive(true);
+        if (GlobalState.scores.ContainsKey(winner)) GlobalState.scores[winner]++;
         StartCoroutine("NextRound");
     }
 
-    IEnumerator NextRound() {
+    IEnumerator NextRound()
+    {
         float prevTimeScale = Time.timeScale;
         Time.timeScale = 0.0f;
         yield return new WaitForSecondsRealtime(3.0f);
@@ -69,5 +101,23 @@ public class GameState : MonoBehaviour
         int sceneCount = SceneManager.sceneCountInBuildSettings;
         int rng = UnityEngine.Random.Range(0, sceneCount);
         SceneManager.LoadScene(rng);
+    }
+
+    void Finale() 
+    {
+        string end = "";
+        string winner = "";
+        int high_score = -1;
+        foreach (KeyValuePair<string, int> score in GlobalState.scores)
+        {
+            end += score.Key + ": " + score.Value.ToString() + "\n";
+            if (score.Value > high_score) winner = score.Key;
+        }
+        end += "Congrats to " + winner + "!";
+        mText.SetActive(true);
+        mText.GetComponent<Text>().text = end;
+
+        GlobalState.scores.Clear();
+        StartCoroutine("NextRound");
     }
 }
