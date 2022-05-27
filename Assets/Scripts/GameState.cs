@@ -11,28 +11,25 @@ public class GameState : MonoBehaviour
     [SerializeField]
     private GameObject mText;
 
-    private List<GameObject> mPlayers;
+    private List<GameObject> mPlayerGOs;
 
     private int mAlive;
 
     private List<GameObject> mDied;
 
-    private Dictionary<string, int> mGlobalStateSnapshot;
+    private Dictionary<int, int> mGlobalStateSnapshot;
 
     // Awake over start so that PlayerGenerator goes first
     void Awake()
     {
         Time.timeScale = 1f;
         bool over = false;
-        mPlayers = GameObject.FindGameObjectsWithTag("Player").ToList();
-        foreach (GameObject player in mPlayers)
+        foreach (int pNum in GlobalState.players)
         {
-            if (!GlobalState.scores.ContainsKey(player.name))
-                GlobalState.scores.Add(player.name, 0);
-            else if (GlobalState.scores[player.name] >= GlobalState.end)
+            if (!GlobalState.scores.ContainsKey(pNum))
+                GlobalState.scores.Add(pNum, 0);
+            else if (GlobalState.scores[pNum] >= GlobalState.end)
                 over = true; // Could break, but wanna add any new players for end screen
-            else
-                Debug.Log(player.name + ": " + GlobalState.scores[player.name]);
         }
         if (over)
             StartCoroutine("Finale");
@@ -55,7 +52,8 @@ public class GameState : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.15f);
         Time.timeScale = prevTimeScale;
         mText.SetActive(false);
-        mAlive = mPlayers.Count;
+        mPlayerGOs = GameObject.FindGameObjectsWithTag("Player").ToList();
+        mAlive = mPlayerGOs.Count;
         mDied = new List<GameObject>();
         Events.PlayerDeath.AddListener(PlayerDied);
     }
@@ -65,31 +63,34 @@ public class GameState : MonoBehaviour
         mDied.Add(died);
         if (mAlive == 1)
         {
-            string winner = "";
-            foreach (GameObject player in mPlayers)
+            int winner = -1;
+            foreach (GameObject player in mPlayerGOs)
             {
                 if (!mDied.Contains(player))
-                    winner = player.name;
+                    winner = player.GetComponent<Controller>().joyStickNum;
             }
             End(winner);
         }
         else if (mAlive <= 0)
         {
             StopAllCoroutines();
-            foreach (KeyValuePair<string, int> score in mGlobalStateSnapshot)
+            foreach (KeyValuePair<int, int> score in mGlobalStateSnapshot)
                 GlobalState.scores[score.Key] = score.Value;
-            End(string.Empty);
+            End(-1);
         }
             
     }
 
-    void End(string winner)
+    void End(int winner)
     {
         if (GlobalState.scores.ContainsKey(winner)) GlobalState.scores[winner]++;
         string msg = "";
-        msg += winner == string.Empty ? "TIE!\n\n" : winner + " won the round!\n\n";
-        foreach (KeyValuePair<string, int> score in GlobalState.scores)
-            msg += score.Key + ": " + score.Value.ToString() + "\n";
+        msg += winner == -1 ? "TIE!\n\n" :
+                              GlobalState.characters[winner].name.Replace('_', ' ')
+                                    + " won the round!\n\n";
+        foreach (KeyValuePair<int, int> score in GlobalState.scores)
+            msg += GlobalState.characters[score.Key].name.Replace('_', ' ') + 
+                        ": " + score.Value.ToString() + "\n";
         mText.GetComponent<Text>().text = msg;
         mText.SetActive(true);
         StartCoroutine("NextRound");
@@ -109,14 +110,19 @@ public class GameState : MonoBehaviour
     IEnumerator Finale() 
     {
         string end = "Rounds are over...\n\n";
-        string winner = "";
+        int winner = -1;
         int high_score = -1;
-        foreach (KeyValuePair<string, int> score in GlobalState.scores)
+        foreach (KeyValuePair<int, int> score in GlobalState.scores)
         {
-            end += score.Key + ": " + score.Value.ToString() + "\n";
-            if (score.Value > high_score) winner = score.Key;
+            end += GlobalState.characters[score.Key].name.Replace('_', ' ') + 
+                        ": " + score.Value.ToString() + "\n";
+            if (score.Value > high_score)
+            {
+                winner = score.Key;
+                high_score = score.Value;
+            } 
         }
-        end += "\nCongrats to " + winner + "!";
+        end += "\nCongrats to " + GlobalState.characters[winner].name.Replace('_', ' ') + "!";
         end += "\n\nPress the + or - button to restart.";
         mText.SetActive(true);
         mText.GetComponent<Text>().text = end;

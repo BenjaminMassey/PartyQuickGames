@@ -113,10 +113,12 @@ public class Selection : MonoBehaviour
             else if (mCurrent == Setting.Characters)
             {
                 if (mCurrentPlayerIndex < GlobalState.players.Length &&
-                    Input.GetKeyDown(JoyCon.X(GlobalState.players[mCurrentPlayerIndex])))
+                    Input.GetKeyDown(JoyCon.X(GlobalState.players[mCurrentPlayerIndex])) &&
+                    !GlobalState.characters.ContainsValue(mCharacterSprites[mNum]))
                 {
                     GlobalState.characters.Add(GlobalState.players[mCurrentPlayerIndex], mCharacterSprites[mNum]);
                     mCurrentPlayerIndex++;
+                    mNum = -1;
                 }
                 else
                 {
@@ -127,9 +129,13 @@ public class Selection : MonoBehaviour
                         mNum -= Input.GetKeyDown(JoyCon.SL(GlobalState.players[mCurrentPlayerIndex])) ? 1 : 0;
                         if (mNum <= -1) mNum = mCharacterSprites.Length - 1;
                         if (mNum >= mCharacterSprites.Length) mNum = 0;
-                        if (mNum != prevNum || mNum == -1)
+                        if (mNum != prevNum || prevNum == -1)
                         {
                             mImageObj.GetComponent<SpriteRenderer>().sprite = mCharacterSprites[mNum];
+                            if (GlobalState.characters.ContainsValue(mCharacterSprites[mNum]))
+                                mImageObj.GetComponent<SpriteRenderer>().color = new Color(0.2f, 0.2f, 0.2f);
+                            else
+                                mImageObj.GetComponent<SpriteRenderer>().color = Color.white;
                             float scale_width = mImgSize.x / mCharacterSprites[mNum].texture.width;
                             float scale_height = mImgSize.y / mCharacterSprites[mNum].texture.height;
                             mImageObj.transform.localScale = new Vector3(mInitialScale.x * scale_width,
@@ -137,8 +143,9 @@ public class Selection : MonoBehaviour
                                                                          mInitialScale.z);
                             string name = mCharacterSprites[mNum].texture.name;
                             name = name.Replace('_', ' ');
-                            string msg = mHeader[mCurrent] + "\n" + name + "\n\n\n\n\n\n\n";
+                            string msg = mHeader[mCurrent] + " (P" +  mCurrentPlayerIndex.ToString()+ ")\n" + name + "\n\n\n\n\n\n\n";
                             mTextObj.GetComponent<Text>().text = msg;
+                            // TODO: indicate player name, somehow
                         }
                     }
                     else
