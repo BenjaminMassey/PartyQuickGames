@@ -8,12 +8,10 @@ using UnityEngine.UI;
 
 public class GameState : MonoBehaviour
 {
-
-    [SerializeField]
-    private List<GameObject> mPlayers;
-
     [SerializeField]
     private GameObject mText;
+
+    private List<GameObject> mPlayers;
 
     private int mAlive;
 
@@ -21,11 +19,12 @@ public class GameState : MonoBehaviour
 
     private Dictionary<string, int> mGlobalStateSnapshot;
 
-    // Start is called before the first frame update
-    void Start()
+    // Awake over start so that PlayerGenerator goes first
+    void Awake()
     {
         Time.timeScale = 1f;
         bool over = false;
+        mPlayers = GameObject.FindGameObjectsWithTag("Player").ToList();
         foreach (GameObject player in mPlayers)
         {
             if (!GlobalState.scores.ContainsKey(player.name))

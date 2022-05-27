@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-    [SerializeField]
-    private float mSpeed = 300.0f;
+    public int joyStickNum;
 
     [SerializeField]
-    private int mJoyStickNum; // TODO: make this dynamically figured out, rather than set in editor
+    private float mSpeed = 300.0f;
 
     [SerializeField]
     private KeyCode mUpKey;
@@ -48,11 +47,11 @@ public class Controller : MonoBehaviour
                              Input.GetKey(mUpKey) ? 1f : 0f);
         mMove -= new Vector2(Input.GetKey(mLeftKey) ? 1f : 0f,
                              Input.GetKey(mDownKey) ? 1f : 0f);
-        mMove += new Vector2(Input.GetAxis(JoyCon.StickY(mJoyStickNum)), Input.GetAxis(JoyCon.StickX(mJoyStickNum)));
-        mMove += new Vector2(Input.GetKey(JoyCon.X(mJoyStickNum)) ? 1f : 0f,
-                             Input.GetKey(JoyCon.Y(mJoyStickNum)) ? 1f : 0f);
-        mMove -= new Vector2(Input.GetKey(JoyCon.B(mJoyStickNum)) ? 1f : 0f,
-                             Input.GetKey(JoyCon.A(mJoyStickNum)) ? 1f : 0f);
+        mMove += new Vector2(Input.GetAxis(JoyCon.StickY(joyStickNum)), Input.GetAxis(JoyCon.StickX(joyStickNum)));
+        mMove += new Vector2(Input.GetKey(JoyCon.X(joyStickNum)) ? 1f : 0f,
+                             Input.GetKey(JoyCon.Y(joyStickNum)) ? 1f : 0f);
+        mMove -= new Vector2(Input.GetKey(JoyCon.B(joyStickNum)) ? 1f : 0f,
+                             Input.GetKey(JoyCon.A(joyStickNum)) ? 1f : 0f);
         mMove = new Vector2(Mathf.Clamp(mMove.x, -1f, 1f), Mathf.Clamp(mMove.y, -1f, 1f));
         mRigidBody.AddForce(mMove * Time.deltaTime * mSpeed);
     }
