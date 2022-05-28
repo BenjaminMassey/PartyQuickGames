@@ -44,8 +44,8 @@ public class Selection : MonoBehaviour
         mHeader = new Dictionary<Setting, string>()
         {
             { Setting.Rounds, "Select the number of rounds." },
-            { Setting.Players, "Press a face button to join the game." },
-            { Setting.Characters, "Select your character." }
+            { Setting.Players, "Press A/B/X/Y to join the game." },
+            { Setting.Characters, "Select your character!" }
         };
         mPlayerValues = new List<int>();
         mNum = 0;
@@ -113,7 +113,10 @@ public class Selection : MonoBehaviour
             else if (mCurrent == Setting.Characters)
             {
                 if (mCurrentPlayerIndex < GlobalState.players.Length &&
-                    Input.GetKeyDown(JoyCon.X(GlobalState.players[mCurrentPlayerIndex])) &&
+                    (Input.GetKeyDown(JoyCon.A(GlobalState.players[mCurrentPlayerIndex])) ||
+                     Input.GetKeyDown(JoyCon.B(GlobalState.players[mCurrentPlayerIndex])) ||
+                     Input.GetKeyDown(JoyCon.X(GlobalState.players[mCurrentPlayerIndex])) ||
+                     Input.GetKeyDown(JoyCon.Y(GlobalState.players[mCurrentPlayerIndex]))) &&
                     !GlobalState.characters.ContainsValue(mCharacterSprites[mNum]))
                 {
                     GlobalState.characters.Add(GlobalState.players[mCurrentPlayerIndex], mCharacterSprites[mNum]);
@@ -143,7 +146,8 @@ public class Selection : MonoBehaviour
                                                                          mInitialScale.z);
                             string name = mCharacterSprites[mNum].texture.name;
                             name = name.Replace('_', ' ');
-                            string msg = mHeader[mCurrent] + " (P" +  mCurrentPlayerIndex.ToString()+ ")\n" + name + "\n\n\n\n\n\n\n";
+                            string msg = mHeader[mCurrent] + " (P" +  mCurrentPlayerIndex.ToString()+ ")\n" + 
+                                            "SL + SR to change, A/B/X/Y to select.\n\n" + name + "\n\n\n\n\n\n\n\n";
                             mTextObj.GetComponent<Text>().text = msg;
                         }
                     }
