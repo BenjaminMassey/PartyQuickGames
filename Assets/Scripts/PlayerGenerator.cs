@@ -6,6 +6,8 @@ public class PlayerGenerator : MonoBehaviour
 {
     [SerializeField]
     private GameObject mPlayerBase;
+    [SerializeField]
+    private GameObject mSpikeBase;
 
     private Vector2 mSize = new Vector2(200f, 200f);
 
@@ -42,6 +44,17 @@ public class PlayerGenerator : MonoBehaviour
             float factor = mSize.x / 100f; // 100 seems to be magic starter for player (assumed square)
             float lax = 1f;
             player.GetComponent<BoxCollider2D>().size = new Vector2((factor * lax) / scale_width, (factor * lax) / scale_height);
+
+            if (mSpikeBase != null)
+            {
+                GameObject spike = Instantiate(mSpikeBase);
+                spike.name = player.name + "'s Spike";
+                spike.transform.position = player.transform.position + (Vector3.right * 2f);
+                spike.GetComponent<Connector>().mOther = player;
+                spike.GetComponent<Controller>().joyStickNum = GlobalState.players[i];
+                HingeJoint2D hj = player.AddComponent<HingeJoint2D>();
+                hj.connectedBody = spike.GetComponent<Rigidbody2D>();
+            }
         }
     }
 }

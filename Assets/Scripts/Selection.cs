@@ -145,7 +145,6 @@ public class Selection : MonoBehaviour
                             name = name.Replace('_', ' ');
                             string msg = mHeader[mCurrent] + " (P" +  mCurrentPlayerIndex.ToString()+ ")\n" + name + "\n\n\n\n\n\n\n";
                             mTextObj.GetComponent<Text>().text = msg;
-                            // TODO: indicate player name, somehow
                         }
                     }
                     else

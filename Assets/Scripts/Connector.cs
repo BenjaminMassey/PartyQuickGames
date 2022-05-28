@@ -5,14 +5,14 @@ using UnityEngine;
 public class Connector : MonoBehaviour
 {
     [SerializeField]
-    private GameObject mOther;
+    public GameObject mOther;
 
     private LineRenderer mLR;
 
-    // Start is called before the first frame update
-    void Start()
+    // Awake usage so done after PlayerGenerator does its thing
+    void Awake()
     {
-
+        // TODO: fix everything
         mLR = GetComponent<LineRenderer>();
         mLR.positionCount = 2;
         StartCoroutine("Connect");
@@ -21,8 +21,11 @@ public class Connector : MonoBehaviour
     IEnumerator Connect()
     {
         while (true) {
-            mLR.SetPosition(0, transform.position);
-            mLR.SetPosition(1, mOther.transform.position);
+            if (mOther != null)
+            {
+                mLR.SetPosition(0, transform.position);
+                mLR.SetPosition(1, mOther.transform.position);
+            }
             yield return new WaitForFixedUpdate();
         }
     }
