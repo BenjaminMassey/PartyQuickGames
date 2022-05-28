@@ -39,7 +39,9 @@ public class PlayerGenerator : MonoBehaviour
             player.transform.localScale = new Vector3(initialScale.x * scale_width,
                                                       initialScale.y * scale_height,
                                                       initialScale.z);
-            // TODO: adjust BoxCollider2D size dynamically
+            float factor = mSize.x / 100f; // 100 seems to be magic starter for player (assumed square)
+            float lax = 1f;
+            player.GetComponent<BoxCollider2D>().size = new Vector2((factor * lax) / scale_width, (factor * lax) / scale_height);
         }
     }
 }
