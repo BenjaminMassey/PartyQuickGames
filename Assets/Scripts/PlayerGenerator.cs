@@ -19,13 +19,13 @@ public class PlayerGenerator : MonoBehaviour
         mStarts = new Vector3[]
         {
             new Vector3(-5f, -5f, 0f),
-            new Vector3(0f, -5f, 0f),
             new Vector3(5f, -5f, 0f),
+            new Vector3(0f, -5f, 0f),
             new Vector3(-5f, 0f, 0f),
-            new Vector3(0f, 0f, 0f),
             new Vector3(5f, 0f, 0f),
             new Vector3(-5f, 5f, 0f),
-            new Vector3(5f, 5f, 0f)
+            new Vector3(5f, 5f, 0f),
+            new Vector3(0f, 0f, 0f)
         };
         for (int i = 0; i < GlobalState.players.Length; i++)
         {

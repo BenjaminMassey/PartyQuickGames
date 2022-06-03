@@ -41,6 +41,12 @@ public class GameState : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+            StartCoroutine("Finale");
+    }
+
     IEnumerator Begin()
     {
         float prevTimeScale = Time.timeScale;
@@ -86,10 +92,10 @@ public class GameState : MonoBehaviour
         if (GlobalState.scores.ContainsKey(winner)) GlobalState.scores[winner]++;
         string msg = "";
         msg += winner == -1 ? "TIE!\n\n" :
-                              GlobalState.characters[winner].name.Replace('_', ' ')
+                              GlobalState.characters[winner].name
                                     + " won the round!\n\n";
         foreach (KeyValuePair<int, int> score in GlobalState.scores)
-            msg += GlobalState.characters[score.Key].name.Replace('_', ' ') + 
+            msg += GlobalState.characters[score.Key].name + 
                         ": " + score.Value.ToString() + "\n";
         mText.GetComponent<Text>().text = msg;
         mText.SetActive(true);
@@ -103,7 +109,7 @@ public class GameState : MonoBehaviour
         yield return new WaitForSecondsRealtime(3f);
         Time.timeScale = prevTimeScale;
         int sceneCount = SceneManager.sceneCountInBuildSettings;
-        int rng = UnityEngine.Random.Range(1, sceneCount);
+        int rng = UnityEngine.Random.Range(2, sceneCount);
         SceneManager.LoadScene(rng);
     }
 
@@ -114,7 +120,7 @@ public class GameState : MonoBehaviour
         int high_score = -1;
         foreach (KeyValuePair<int, int> score in GlobalState.scores)
         {
-            end += GlobalState.characters[score.Key].name.Replace('_', ' ') + 
+            end += GlobalState.characters[score.Key].name + 
                         ": " + score.Value.ToString() + "\n";
             if (score.Value > high_score)
             {
@@ -122,7 +128,7 @@ public class GameState : MonoBehaviour
                 high_score = score.Value;
             } 
         }
-        end += "\nCongrats to " + GlobalState.characters[winner].name.Replace('_', ' ') + "!";
+        end += "\nCongrats to " + GlobalState.characters[winner].name + "!";
         end += "\n\nPress the + or - button to restart.";
         mText.SetActive(true);
         mText.GetComponent<Text>().text = end;
@@ -136,6 +142,7 @@ public class GameState : MonoBehaviour
         }
         Time.timeScale = prevTimeScale;
         GlobalState.scores.Clear();
-        SceneManager.LoadScene(0);
+        GlobalState.characters.Clear();
+        SceneManager.LoadScene(1);
     }
 }

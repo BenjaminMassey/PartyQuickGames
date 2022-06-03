@@ -276,7 +276,7 @@ MonoBehaviour:
   mBaseGO: {fileID: 5483631088079276651, guid: 0c1c78a7322b1714f8a7e23e7bea5d36, type: 3}
   mFrequency: 3
   mAmount: 2
-  mStart: {x: 15, y: 0, z: 0}
+  mStart: {x: 17, y: 0, z: 0}
   mVariance: {x: 0, y: 20, z: 0}
 --- !u!1 &501304309
 GameObject:
@@ -444,7 +444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5481767478039754889, guid: 587e5baf726fad940ba835bdb366d3fd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.5
+      value: 16.5
       objectReference: {fileID: 0}
     - target: {fileID: 5481767478039754889, guid: 587e5baf726fad940ba835bdb366d3fd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -558,7 +558,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5481767478039754889, guid: 587e5baf726fad940ba835bdb366d3fd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.5
+      value: -16.5
       objectReference: {fileID: 0}
     - target: {fileID: 5481767478039754889, guid: 587e5baf726fad940ba835bdb366d3fd, type: 3}
       propertyPath: m_LocalPosition.y
