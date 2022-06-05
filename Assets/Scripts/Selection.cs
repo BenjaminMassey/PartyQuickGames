@@ -47,7 +47,7 @@ public class Selection : MonoBehaviour
         {
             yield return StartCoroutine(
                 LoadImages(
-                    Directory.GetFiles(GlobalState.path, param),
+                    Directory.GetFiles(GlobalState.characters_path, param),
                     param
                 )
             );
