@@ -2062,6 +2062,57 @@ namespace SimpleFileBrowser
 			listView.UpdateList();
 		}
 
+		public void SelectIndex(int index)
+		{
+
+			multiSelectionPivotFileEntry = 0;
+
+			selectedFileEntries.Clear();
+
+			if (m_pickerMode != PickMode.Files)
+			{
+				selectedFileEntries.Add(index);
+			}
+			else
+			{
+				// Don't select folders in file picking mode if MultiSelectionToggleSelectionMode is enabled or about to be enabled
+				
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WSA || UNITY_WSA_10_0
+					if (!m_multiSelectionToggleSelectionMode || !validFileEntries[index].IsDirectory)
+#else
+					if( !validFileEntries[index].IsDirectory )
+#endif
+						selectedFileEntries.Add(index);
+			}
+
+#if !UNITY_EDITOR && !UNITY_STANDALONE && !UNITY_WSA && !UNITY_WSA_10_0
+			MultiSelectionToggleSelectionMode = true;
+#endif
+
+			UpdateFilenameInputFieldWithSelection();
+			listView.UpdateList();
+		}
+
+		public int GetValidFileEntriesCount()
+		{
+			return validFileEntries.Count;
+		}
+
+		public FileBrowserItem GetCurrentItem()
+		{
+			foreach (FileBrowserItem item in allItems)
+			{
+				if (item.Position == selectedFileEntries[0])
+					return item;
+			}
+			return null;
+		}
+
+		public void SetScrollVector(float amount)
+		{
+			filesScrollRect.verticalNormalizedPosition = amount;
+		}
+
 		// Prompts user to create a new folder in the current directory
 		public void CreateNewFolder()
 		{
@@ -2677,6 +2728,7 @@ namespace SimpleFileBrowser
 		#endregion
 
 		#region File Browser Functions (static)
+		
 		public static bool ShowSaveDialog( OnSuccess onSuccess, OnCancel onCancel,
 										   PickMode pickMode, bool allowMultiSelection = false,
 										   string initialPath = null, string initialFilename = null,

@@ -33,7 +33,7 @@ public class AutoBG : MonoBehaviour
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         sr.sprite = bg;
         float aspect = ((float) bg.texture.height) / ((float) bg.texture.width);
-        Vector2 size = new Vector2(3600f, 3600f * aspect);
+        Vector2 size = new Vector2(3800f, 3800f * aspect);
         float scale_width = size.x / bg.texture.width;
         float scale_height = size.y / bg.texture.height;
         Vector3 initialScale = transform.localScale;

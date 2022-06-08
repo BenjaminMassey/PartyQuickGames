@@ -10,6 +10,8 @@ public class Selection : MonoBehaviour
     [SerializeField]
     private GameObject mTextObj;
     [SerializeField]
+    private GameObject mTextObj2;
+    [SerializeField]
     private GameObject mImageObj;
 
     private Vector2 mImgSize = new Vector2(400f, 400f);
@@ -37,6 +39,8 @@ public class Selection : MonoBehaviour
 
     private bool mLoaded = false;
 
+    private bool mNeutraled;
+
     // Start is called before the first frame update
     IEnumerator Start()
     {
@@ -53,7 +57,7 @@ public class Selection : MonoBehaviour
             );
         }
         mInitialScale = mImageObj.transform.localScale;
-        mTextObj.SetActive(true);
+        mTextObj2.SetActive(true);
         mCurrent = Setting.Rounds;
         mHeader = new Dictionary<Setting, string>()
         {
@@ -65,6 +69,7 @@ public class Selection : MonoBehaviour
         mNum = 0;
         mCurrentPlayerIndex = 0;
         mLoaded = true;
+        mNeutraled = true;
     }
 
     // Update is called once per frame
@@ -105,7 +110,7 @@ public class Selection : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.RightArrow)) mNum += 1;
                 if (Input.GetKeyDown(KeyCode.LeftArrow)) mNum -= 1;
                 mNum = Mathf.Max(mNum, 0);
-                string msg = mHeader[mCurrent] + "\n\n";
+                string msg = mHeader[mCurrent] + "\nUse SR + SL to change." + "\n\n";
                 if (mNum > 0) msg += "< ";
                 else msg += "  ";
                 msg += mNum.ToString();

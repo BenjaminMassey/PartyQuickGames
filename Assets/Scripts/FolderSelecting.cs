@@ -19,15 +19,66 @@ public class FolderSelecting : MonoBehaviour
 
     private FolderType mCurrent;
 
+    private FileBrowser mFileBrowser;
+
+    private int mFileIndex;
+
+    private bool mNeutraled;
+
     // Start is called before the first frame update
     void Start()
     {
         mCurrent = FolderType.Backgrounds;
         MakeDialog("Choose a folder of backgrounds.");
+        mFileBrowser = GameObject.Find("SimpleFileBrowserCanvas(Clone)").GetComponent<FileBrowser>();
+        mFileIndex = 0;
+        mFileBrowser.SelectIndex(0);
+        mNeutraled = true;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(JoyCon.X()))
+        {
+            mFileBrowser.OnItemSelected(mFileBrowser.GetCurrentItem(), true);
+            mFileIndex = 0;
+            mFileBrowser.SelectIndex(0);
+        }
+
+        if (Input.GetKeyDown(JoyCon.Plus()))
+            mFileBrowser.OnSubmitButtonClicked();
+
+        if (Input.GetKeyDown(JoyCon.A()))
+        {
+            mFileBrowser.OnUpButtonPressed();
+            mFileIndex = 0;
+            mFileBrowser.SelectIndex(0);
+        }
+
+        int change = 0;
+        float stick = Input.GetAxis(JoyCon.StickX());
+        if (mNeutraled && (stick > 0.5f || stick < -0.5f))
+        {
+            mNeutraled = false;
+            change += (Mathf.RoundToInt(stick) * -1);
+        }
+        if (stick == 0) mNeutraled = true;
+
+        if (change == 0) return;
+
+        mFileIndex = mFileIndex + change;
+        if (mFileIndex < 0) mFileIndex = 0;
+        int vfec = mFileBrowser.GetValidFileEntriesCount();
+        if (mFileIndex >= vfec) mFileIndex = vfec - 1;
+        
+        mFileBrowser.SelectIndex(mFileIndex);
+
+        mFileBrowser.SetScrollVector(((float) vfec - mFileIndex) / ((float) vfec));
     }
 
     void MakeDialog(string top_text)
     {
+        top_text += "\nStick = move  ;  X / > = select  ;  A / \\/ = move  ;  + / - = confirm.";
         text_obj.GetComponent<Text>().text = top_text;
         FileBrowser.ShowLoadDialog(Selected,
                                    Canceled,
@@ -55,12 +106,6 @@ public class FolderSelecting : MonoBehaviour
 
     void Canceled()
     { 
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         
     }
 }
