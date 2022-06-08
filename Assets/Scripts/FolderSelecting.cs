@@ -28,6 +28,7 @@ public class FolderSelecting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        text_obj.SetActive(true);
         mCurrent = FolderType.Backgrounds;
         MakeDialog("Choose a folder of backgrounds.");
         mFileBrowser = GameObject.Find("SimpleFileBrowserCanvas(Clone)").GetComponent<FileBrowser>();
