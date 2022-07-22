@@ -47,11 +47,22 @@ public class Controller : MonoBehaviour
                              Input.GetKey(mUpKey) ? 1f : 0f);
         mMove -= new Vector2(Input.GetKey(mLeftKey) ? 1f : 0f,
                              Input.GetKey(mDownKey) ? 1f : 0f);
-        mMove += new Vector2(Input.GetAxis(JoyCon.StickY(joyStickNum)), Input.GetAxis(JoyCon.StickX(joyStickNum)));
-        mMove += new Vector2(Input.GetKey(JoyCon.X(joyStickNum)) ? 1f : 0f,
-                             Input.GetKey(JoyCon.Y(joyStickNum)) ? 1f : 0f);
-        mMove -= new Vector2(Input.GetKey(JoyCon.B(joyStickNum)) ? 1f : 0f,
-                             Input.GetKey(JoyCon.A(joyStickNum)) ? 1f : 0f);
+        if (joyStickNum > -1)
+        {
+            mMove += new Vector2(Input.GetAxis(JoyCon.StickY(joyStickNum)), Input.GetAxis(JoyCon.StickX(joyStickNum)));
+            mMove += new Vector2(Input.GetKey(JoyCon.X(joyStickNum)) ? 1f : 0f,
+                                 Input.GetKey(JoyCon.Y(joyStickNum)) ? 1f : 0f);
+            mMove -= new Vector2(Input.GetKey(JoyCon.B(joyStickNum)) ? 1f : 0f,
+                                 Input.GetKey(JoyCon.A(joyStickNum)) ? 1f : 0f);
+        }
+        else
+        {
+            mMove += new Vector2(Input.GetAxis(JoyCon.StickY()), Input.GetAxis(JoyCon.StickX()));
+            mMove += new Vector2(Input.GetKey(JoyCon.X()) ? 1f : 0f,
+                                 Input.GetKey(JoyCon.Y()) ? 1f : 0f);
+            mMove -= new Vector2(Input.GetKey(JoyCon.B()) ? 1f : 0f,
+                                 Input.GetKey(JoyCon.A()) ? 1f : 0f);
+        }
         mMove = new Vector2(Mathf.Clamp(mMove.x, -1f, 1f), Mathf.Clamp(mMove.y, -1f, 1f));
         mRigidBody.AddForce(mMove * Time.deltaTime * mSpeed);
     }

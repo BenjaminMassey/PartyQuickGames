@@ -39,8 +39,19 @@ public class Gunner : MonoBehaviour
     void Update()
     {
         // Below are swapped to reality but I simply cannot
-        float x = Input.GetAxis(JoyCon.StickX(joyStickNum));
-        float y = Input.GetAxis(JoyCon.StickY(joyStickNum));
+        float x = 0f;
+        float y = 0f;
+        if (joyStickNum > -1)
+        {
+            x = Input.GetAxis(JoyCon.StickX(joyStickNum));
+            y = Input.GetAxis(JoyCon.StickY(joyStickNum));
+        }
+        else
+        {
+            x = Input.GetAxis(JoyCon.StickX());
+            y = Input.GetAxis(JoyCon.StickY());
+        }
+        
         if (!(x == 0f && y == 0f))
         {
             transform.localPosition = new Vector3(y, x, 0f) * 2.0f;
@@ -60,7 +71,7 @@ public class Gunner : MonoBehaviour
             if (t >= 1f) 
             {
                 start_time = Time.time;
-                if (mGameState.GetRunning()) Shoot();
+                if (mGameState.GetRunning() || joyStickNum < 0) Shoot();
                 mLine.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0f);
             }
             yield return new WaitForFixedUpdate();
