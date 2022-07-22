@@ -167,4 +167,9 @@ public class GameState : MonoBehaviour
         }
         return result;
     }
+
+    public bool GetRunning()
+    {
+        return mAlive > 0;
+    }
 }

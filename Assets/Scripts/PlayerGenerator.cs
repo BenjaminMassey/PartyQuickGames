@@ -8,6 +8,8 @@ public class PlayerGenerator : MonoBehaviour
     private GameObject mPlayerBase;
     [SerializeField]
     private GameObject mSpikeBase;
+    [SerializeField]
+    private GameObject mGunBase;
 
     private Vector2 mSize = new Vector2(200f, 200f);
 
@@ -54,6 +56,14 @@ public class PlayerGenerator : MonoBehaviour
                 spike.GetComponent<Controller>().joyStickNum = GlobalState.players[i];
                 HingeJoint2D hj = player.AddComponent<HingeJoint2D>();
                 hj.connectedBody = spike.GetComponent<Rigidbody2D>();
+            }
+            if (mGunBase != null)
+            {
+                GameObject gun = Instantiate(mGunBase);
+                gun.name = player.name + "'s Gun";
+                gun.transform.position = player.transform.position;
+                gun.transform.parent = player.transform;
+                gun.GetComponent<Gunner>().joyStickNum = GlobalState.players[i];
             }
         }
     }

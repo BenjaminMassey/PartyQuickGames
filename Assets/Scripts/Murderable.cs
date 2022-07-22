@@ -23,6 +23,11 @@ public class Murderable : MonoBehaviour
             Death();
     }
 
+    void OnTriggerEnter2D(Collider2D col) {
+        if (col.gameObject.tag.Equals("Murderer") && !mDying && !col.gameObject.name.Contains(name))
+            Death();
+    }
+
     void Death() {
         mDying = true; // Shouldn't be necessary but here we are (events are weird)
         Events.PlayerDeath.Invoke(gameObject);

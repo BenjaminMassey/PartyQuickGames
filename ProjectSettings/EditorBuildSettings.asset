@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NotNiceMeat.unity
     guid: 8b21e8a06270bff409fbbc443e836107
+  - enabled: 1
+    path: Assets/Scenes/NotShotDog.unity
+    guid: 19a0b965505dfac4b82c780f565dce93
   m_configObjects: {}
