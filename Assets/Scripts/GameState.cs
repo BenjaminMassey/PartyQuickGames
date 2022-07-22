@@ -94,9 +94,12 @@ public class GameState : MonoBehaviour
         msg += winner == -1 ? "TIE!\n\n" :
                               GlobalState.characters[winner].name
                                     + " won the round!\n\n";
-        foreach (KeyValuePair<int, int> score in GlobalState.scores)
-            msg += GlobalState.characters[score.Key].name + 
+        (int, int)[] sortedScores = getSortedPlayerInfo();
+        foreach ((int Key, int Value) score in sortedScores)
+        {
+            msg += GlobalState.characters[score.Key].name +
                         ": " + score.Value.ToString() + "\n";
+        }
         mText.GetComponent<Text>().text = msg;
         mText.SetActive(true);
         StartCoroutine("NextRound");
@@ -118,8 +121,8 @@ public class GameState : MonoBehaviour
         string end = "Rounds are over...\n\n";
         int winner = -1;
         int high_score = -1;
-        KeyValuePair<int, int>[] charArray = GlobalState.scores.ToArray();
-        foreach (KeyValuePair<int, int> score in GlobalState.scores)
+        (int, int)[] sortedScores = getSortedPlayerInfo();
+        foreach ((int Key, int Value) score in sortedScores)
         {
             end += GlobalState.characters[score.Key].name + 
                         ": " + score.Value.ToString() + "\n";
@@ -145,5 +148,23 @@ public class GameState : MonoBehaviour
         GlobalState.scores.Clear();
         GlobalState.characters.Clear();
         SceneManager.LoadScene(1);
+    }
+
+    (int, int)[] getSortedPlayerInfo() 
+    {
+        (int, int)[] result = new (int, int)[GlobalState.scores.Count];
+        int result_index = 0;
+        for (int i = GlobalState.end; i >= 0; i--)
+        {
+            foreach (KeyValuePair<int, int> score in GlobalState.scores)
+            { 
+                if (score.Value == i)
+                {
+                    result[result_index] = (score.Key, score.Value);
+                    result_index++;
+                }
+            }
+        }
+        return result;
     }
 }
