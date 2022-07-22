@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NotShotDog.unity
     guid: 19a0b965505dfac4b82c780f565dce93
+  - enabled: 1
+    path: Assets/Scenes/NotHectic.unity
+    guid: 86a71d14f854e4c4a8d3cab202c51b11
   m_configObjects: {}

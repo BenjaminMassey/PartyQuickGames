@@ -38,12 +38,14 @@ public class Gunner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Below are swapped to reality but I simply cannot
         float x = Input.GetAxis(JoyCon.StickX(joyStickNum));
         float y = Input.GetAxis(JoyCon.StickY(joyStickNum));
         if (!(x == 0f && y == 0f))
         {
             transform.localPosition = new Vector3(y, x, 0f) * 2.0f;
             transform.eulerAngles = new Vector3(0f, 0f, Mathf.Atan2(x, y) * 180f / Mathf.PI);
+            // http://answers.unity.com/answers/361707/view.html
         }
     }
 
