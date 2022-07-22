@@ -43,10 +43,11 @@ public class FolderSelecting : MonoBehaviour
         {
             mFileBrowser.OnItemSelected(mFileBrowser.GetCurrentItem(), true);
             mFileIndex = 0;
-            mFileBrowser.SelectIndex(0);
+            try { mFileBrowser.SelectIndex(0); }
+            catch (System.Exception e) { Debug.Log("FolderSelecting Exception: " + e.Message); }
         }
 
-        if (Input.GetKeyDown(JoyCon.Plus()))
+        if (Input.GetKeyDown(JoyCon.Plus()) || Input.GetKeyDown(JoyCon.Minus()))
             mFileBrowser.OnSubmitButtonClicked();
 
         if (Input.GetKeyDown(JoyCon.A()))

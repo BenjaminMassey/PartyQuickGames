@@ -118,6 +118,7 @@ public class GameState : MonoBehaviour
         string end = "Rounds are over...\n\n";
         int winner = -1;
         int high_score = -1;
+        KeyValuePair<int, int>[] charArray = GlobalState.scores.ToArray();
         foreach (KeyValuePair<int, int> score in GlobalState.scores)
         {
             end += GlobalState.characters[score.Key].name + 
